@@ -10,3 +10,12 @@ Now it also starting SPV on top of testing chain. 2 chain modes are availiable (
 With startup params as in example above SPV will be available for TCP interaction on port 50001
 
 Note that you should mount zcash-params from somewhere! As an alternative you might add fetch-params.sh to your zip with daemon and execute it before start_blockchain.py script start. But note that it'll consume A LOT of network traffic.
+
+## Building multiarch image
+1. `docker build --platform linux/amd64 -t artempikulin/testblockchain:amd64 -f Dockerfile.amd64 .`
+2. `docker build --platform linux/arm64 -t artempikulin/testblockchain:arm64 -f Dockerfile.arm64 .`
+3. `docker push artempikulin/testblockchain:amd64`
+4. `docker push artempikulin/testblockchain:arm64`
+5. `docker manifest rm artempikulin/testblockchain:multiarch`
+6. `docker manifest create artempikulin/testblockchain:multiarch artempikulin/testblockchain:amd64 artempikulin/testblockchain:arm64`
+7. `docker manifest push artempikulin/testblockchain:multiarch`

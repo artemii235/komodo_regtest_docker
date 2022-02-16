@@ -1,0 +1,15 @@
+FROM ubuntu:18.04
+
+# optionally we can build komodod each time for sure but isnt it CI job?
+RUN apt-get update && apt-get install -y sudo python python3.6 python3-pip libgnutls28-dev libcurl4-openssl-dev libssl-dev wget unzip libcurl3-gnutls libgomp1 && pip3 install setuptools wheel slick-bitcoinrpc
+
+VOLUME ["/data"]
+WORKDIR /data
+
+# daemon port
+EXPOSE 7000
+
+COPY start_blockchain.py /data/
+COPY komodod /data/komodod
+
+CMD python3 -u start_blockchain.py
